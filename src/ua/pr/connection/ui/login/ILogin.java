@@ -1,4 +1,4 @@
-package ua.pr.connection.ui;
+package ua.pr.connection.ui.login;
 
 public interface ILogin {
 	String getUser();
