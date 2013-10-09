@@ -1,4 +1,4 @@
-package ua.pr.connection.ui;
+package ua.pr.ui.login;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -29,7 +29,8 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ua.pr.connection.db.ServerSQL;
+import ua.pr.db.ServerSQL;
+import ua.pr.ui.GUITools;
 
 public class LoginDialog extends JDialog {
 	private static final long serialVersionUID = 1L;

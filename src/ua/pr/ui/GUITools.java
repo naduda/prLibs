@@ -1,4 +1,4 @@
-package ua.pr.connection.ui;
+package ua.pr.ui;
 
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 public class GUITools {
 	public static void createRecommendedMargin(JButton[] buttons) {
 		for (int i = 0; i < buttons.length; i++) {
-			//Відстань від текста до кнопки
+			//ВіпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			Insets margin = buttons[i].getMargin();
 			margin.left = 12;
 			margin.right = 12;

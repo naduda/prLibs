@@ -1,4 +1,4 @@
-package ua.pr.connection.db;
+package ua.pr.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
