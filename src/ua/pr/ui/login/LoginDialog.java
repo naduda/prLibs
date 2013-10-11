@@ -26,6 +26,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -52,11 +54,11 @@ public class LoginDialog extends JDialog {
 	private JTextField txtUser, txtPassword, txtServer, txtDB;
 	private JButton btnOK, btnCANCEL;
 	private boolean save;
-	private JFrame frm;
+	private JFrame parent;
 	
 	public LoginDialog(JFrame parent, ILogin log) {
 		super(parent, TITLE + " - " + log.getDB(), true);
-		this.frm = parent;
+		this.parent = parent;
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				dispose();
@@ -94,6 +96,12 @@ public class LoginDialog extends JDialog {
 		name.add(Box.createHorizontalStrut(12));
 		txtUser = new JTextField(10);
 		txtUser.setText(log.getUser());
+		txtUser.addCaretListener(new CaretListener() {			
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				log.setUser(txtUser.getText());
+			}
+		});
 		name.add(txtUser);
 		
 		Box password = new Box(BoxLayout.X_AXIS);
@@ -102,6 +110,12 @@ public class LoginDialog extends JDialog {
 		password.add(Box.createHorizontalStrut(12));
 		txtPassword = new JPasswordField(10);
 		txtPassword.setText(log.getPassword());
+		txtPassword.addCaretListener(new CaretListener() {			
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				log.setPassword(txtPassword.getText());
+			}
+		});
 		password.add(txtPassword);
 		
 		GUITools.makeSameSize(new JComponent[] {lbUser, lbPassword});
@@ -116,6 +130,12 @@ public class LoginDialog extends JDialog {
 		server.add(Box.createHorizontalStrut(12));
 		txtServer = new JTextField(10);
 		txtServer.setText(log.getServer());
+		txtServer.addCaretListener(new CaretListener() {			
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				log.setServer(txtServer.getText());
+			}
+		});
 		server.add(txtServer);
 		
 		Box db = new Box(BoxLayout.X_AXIS);
@@ -136,8 +156,14 @@ public class LoginDialog extends JDialog {
 					for (int i = 0; i < listDB.size(); i++) {
 						ret = ret + listDB.get(i) + "\n";
 					}
-					JOptionPane.showMessageDialog(frm,ret,MESSAGE_TITLE, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(parent,ret,MESSAGE_TITLE, JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
+		});
+		txtDB.addCaretListener(new CaretListener() {			
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				log.setDB(txtDB.getText());
 			}
 		});
 		txtDB.setText(log.getDB());
@@ -167,8 +193,9 @@ public class LoginDialog extends JDialog {
 		JPanel pButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		pButton.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		JPanel grid = new JPanel(new GridLayout(1, 2, 10, 0));
+
 		btnOK = new JButton(new ButtonAction(OK_TEXT, log));
-		btnCANCEL = new JButton(new ButtonAction(CANCEL_TEXT, log));
+		btnCANCEL = new JButton(new ButtonAction(CANCEL_TEXT));
 		grid.add(btnOK);
 		grid.add(btnCANCEL);
 		pButton.add(grid);
@@ -218,5 +245,13 @@ public class LoginDialog extends JDialog {
 
 	public void setStrConnect(String strConnect) {
 		this.strConnect = strConnect;
+	}
+
+	public JFrame getFrm() {
+		return parent;
+	}
+
+	public void setFrm(JFrame frm) {
+		this.parent = frm;
 	}
 }
