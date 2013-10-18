@@ -5,11 +5,10 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -24,7 +23,9 @@ import javax.swing.KeyStroke;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jdesktop.swingx.JXDatePicker;
+import net.sourceforge.jdatepicker.JDateComponentFactory;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
@@ -236,9 +237,19 @@ public class XMLMenuLoader {
 				comp = curCombo;
 			}
 			if (typeItem.equals(CALENDAR)) {
-				comp = new JXDatePicker();
-				((JXDatePicker)comp).setDate(Calendar.getInstance().getTime());
-				((JXDatePicker)comp).setFormats(new SimpleDateFormat(attrs.getValue(ATTRIBUTE_FORMAT)));
+				JDatePickerImpl dp = (JDatePickerImpl) JDateComponentFactory.createJDatePicker();
+				Properties props = new Properties();
+				props.put("messages.today", "Сьогодні");
+				props.put("messages.nextMonth", "Наступний місяць");
+				props.put("messages.previousMonth", "Попередній місяць");
+				props.put("messages.nextYear", "Наступний рік");
+				props.put("messages.previousYear", "Попередній рік");
+				props.put("messages.clear", "Очистити");
+				dp.setI18nStrings(props);
+//				dp.getJFormattedTextField().setValue(Calendar.getInstance().getTime());
+				dp.setDateFormate(attrs.getValue(ATTRIBUTE_FORMAT));
+				
+				comp = dp;
 			}
 			
 			menuStorage.put(attrs.getValue(ATTRIBUTE_UNIQUE_ID), comp);
