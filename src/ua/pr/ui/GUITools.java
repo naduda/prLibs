@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 public class GUITools {
 	public static void createRecommendedMargin(JButton[] buttons) {
 		for (int i = 0; i < buttons.length; i++) {
-			//³������ �� ������ �� ������
+
 			Insets margin = buttons[i].getMargin();
 			margin.left = 12;
 			margin.right = 12;
