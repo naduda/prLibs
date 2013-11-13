@@ -39,6 +39,7 @@ import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -147,6 +148,14 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		DateFormat date = new SimpleDateFormat(format);
 		DefaultFormatterFactory factory = new DefaultFormatterFactory(createFormatter(date));		
 		formattedTextField.setFormatterFactory(factory);
+	}
+	
+	public Date getDate() {
+		return ((Calendar)formattedTextField.getValue()).getTime();
+	}
+	
+	public void setDate(Calendar calendar) {
+		formattedTextField.setValue(calendar);
 	}
 	
 	protected JFormattedTextField.AbstractFormatter createFormatter() {
