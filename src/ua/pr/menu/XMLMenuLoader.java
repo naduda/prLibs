@@ -34,6 +34,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
 
+import ua.pr.common.ToolsPrLib;
+
 public class XMLMenuLoader {
 
 	private InputSource source;
@@ -44,7 +46,7 @@ public class XMLMenuLoader {
 	
 	public XMLMenuLoader(InputStream stream) {
 		try {
-			Reader reader = new InputStreamReader(stream);
+			Reader reader = new InputStreamReader(stream, "UTF-8");
 			source = new InputSource(reader);
 			parser = SAXParserFactory.newInstance().newSAXParser();
 		} catch (Exception ex) {
@@ -321,7 +323,7 @@ public class XMLMenuLoader {
 				menuItem.setEnabled(isEnabled);
 			}
 			if (icon != null) {
-				menuItem.setIcon(new ImageIcon(icon));
+				menuItem.setIcon(new ImageIcon(ToolsPrLib.getFullPath(icon)));
 			}
 			if (borderInsets != null) {
 				String[] arr = borderInsets.split(";"); 

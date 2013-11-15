@@ -23,8 +23,6 @@ public class FrameXMLMenuLoader extends JFrame {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		setSize(300, 200);
-		setVisible(true);
 	}
 
 	public XMLMenuLoader getLoader() {

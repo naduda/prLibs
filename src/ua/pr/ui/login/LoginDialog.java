@@ -73,6 +73,8 @@ public class LoginDialog extends JDialog {
 		} 
 		
 		getContentPane().add(createGUI(log));
+		getRootPane().setDefaultButton(btnOK);  
+		btnOK.requestFocus(); 
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);

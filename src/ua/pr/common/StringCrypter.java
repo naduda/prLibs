@@ -13,25 +13,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
  
-/**
- * Класс для шифрования и дешифрования строк
- * Использует библиотеку Apache Codec http://commons.apache.org/codec/
- * @author Рудницкий Валентин
- */
 public class StringCrypter {
- 
-    /**
-     * Упрощенный конструктор. Создает StringCrypter с ключом DESSecretKey со значением по умолчанию (не рекомендуется)
-     */
+
     public StringCrypter() {
         this(new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
     }
      
-    /**
-     * Упрощенный конструктор. Создает StringCrypter с ключом 
-     * DESSecretKey (алгоритм шифрования DES) со значением key. 
-     * Ключ key должен иметь длину 8 байт
-     */
     public StringCrypter(byte[] key) {
         try {
             updateSecretKey(new DESSecretKey(key));
@@ -55,10 +42,7 @@ public class StringCrypter {
 		private static final long serialVersionUID = 1L;
 		
 		private final byte[] key;
- 
-        /**
-         * ключ должен иметь длину 8 байт
-         */
+
         public DESSecretKey(byte[] key) {
             this.key = key;
         }
@@ -82,12 +66,6 @@ public class StringCrypter {
     private Cipher ecipher;
     private Cipher dcipher;
  
-    /**
-     * Функция шифрования
-     *
-     * @param str строка открытого текста
-     * @return зашифрованная строка в формате Base64
-     */
     public String encrypt(String str) {
         try {
             byte[] utf8 = str.getBytes("UTF8");
@@ -99,12 +77,6 @@ public class StringCrypter {
         return null;
     }
  
-    /**
-     * Функция дешифрования
-     *
-     * @param str зашифрованная строка в формате Base64
-     * @return расшифрованная строка
-     */
     public String decrypt(String str) {
         try {
             byte[] dec = Base64.decodeBase64(str);
