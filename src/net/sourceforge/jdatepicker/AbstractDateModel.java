@@ -29,6 +29,7 @@ package net.sourceforge.jdatepicker;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashSet;
 
@@ -43,8 +44,9 @@ import javax.swing.event.ChangeListener;
  *
  * @param <T>
  */
-public abstract class AbstractDateModel<T> implements DateModel<T> {
-
+public abstract class AbstractDateModel<T> implements DateModel<T>, Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private boolean selected;
 	private Calendar calendarValue;
 	private HashSet<ChangeListener> changeListeners;

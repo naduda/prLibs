@@ -27,6 +27,8 @@ or implied, of Juan Heyns.
 */
 package net.sourceforge.jdatepicker;
 
+import java.io.Serializable;
+
 import javax.swing.JFormattedTextField;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -40,8 +42,9 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
  * 
  * @author Juan Heyns
  */
-public class JDateComponentFactory {
-	
+public class JDateComponentFactory implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Create with default model and formatter.
 	 * 

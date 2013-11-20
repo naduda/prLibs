@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -36,10 +37,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ua.pr.common.ToolsPrLib;
 
-public class XMLMenuLoader {
-
-	private InputSource source;
-	private SAXParser parser;
+public class XMLMenuLoader implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	transient private InputSource source;
+	transient private SAXParser parser;
 	private DefaultHandler documentHandler;
 	@SuppressWarnings("rawtypes")
 	private Map menuStorage = new HashMap();
@@ -85,7 +87,9 @@ public class XMLMenuLoader {
 	@SuppressWarnings("rawtypes")
 	private LinkedList menus = new LinkedList();
 	
-	class XMLParser extends DefaultHandler {
+	class XMLParser extends DefaultHandler implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
 		private static final String ATTRIBUTE_NAME = "name";
 		private static final String MENUBAR = "menubar";
 		private static final String MENU = "menu";
@@ -232,11 +236,11 @@ public class XMLMenuLoader {
 			((JMenu)menus.getFirst()).add(menuItem);
 		}
 
+		private JComponent comp = null;
 		@SuppressWarnings("unchecked")
 		protected void parseItem(Attributes attrs) {
 			String typeItem = attrs.getValue(ATTRIBUTE_TYPE);		
 
-			JComponent comp = null;
 			if (typeItem.equals(BUTTON)) {
 				comp = new JButton(attrs.getValue(ATTRIBUTE_NAME));								
 			} else if (typeItem.equals(COMBOBOX)) {

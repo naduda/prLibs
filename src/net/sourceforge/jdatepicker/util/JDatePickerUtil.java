@@ -27,11 +27,13 @@ or implied, of Juan Heyns.
 */
 package net.sourceforge.jdatepicker.util;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class JDatePickerUtil {
-	
+public class JDatePickerUtil implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public static DateFormat getMediumDateFormat() {
 		return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
 	}
