@@ -177,6 +177,9 @@ public class XMLMenuLoader implements Serializable {
 				currentMenuBar.add(menu);
 			}
 
+			for (int i = 0; i < attrs.getLength(); i++) {
+				menu.putClientProperty(attrs.getLocalName(i), attrs.getValue(i));
+			}
 			menus.addFirst(menu);
 		}
 		
