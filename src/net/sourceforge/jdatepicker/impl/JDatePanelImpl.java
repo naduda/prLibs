@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -80,9 +81,8 @@ import net.sourceforge.jdatepicker.util.JDatePickerUtil;
  * @author Yue Huang
  * @param <T>
  */
-public class JDatePanelImpl extends JPanel implements JDatePanel {
-
-	private static final long serialVersionUID = -2299249311312882915L;
+public class JDatePanelImpl extends JPanel implements JDatePanel, Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private HashSet<ActionListener> actionListeners;
 	private Properties i18nStrings;
@@ -101,12 +101,20 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 		
 		internalModel = new InternalCalendarModel((model != null) ? model : createDefaultDateModel());
 		internalController = new InternalController();
-		internalView = new InternalView();
+//		internalView = new InternalView();
 		
 		setLayout(new GridLayout(1, 1));
-		add(internalView);
+		add(getInternalView());
 	}
 	
+	public InternalView getInternalView() {
+		if (internalView == null) 
+		{
+			internalView = new InternalView();
+		}
+		return internalView;
+	}
+
 	protected DateModel<?> createDefaultDateModel() {
 		return new UtilCalendarModel();
 	}
@@ -189,10 +197,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 * Logically grouping the view controls under this internal class. 
 	 * 
 	 * @author Juan Heyns
-	 */
-	private class InternalView extends JPanel {
-	
-		private static final long serialVersionUID = -6844493839307157682L;
+	 */	
+	private class InternalView extends JPanel implements Serializable {	
+		private static final long serialVersionUID = 1L;
 		
 		private JPanel centerPanel;
 		private JPanel northCenterPanel;
@@ -596,9 +603,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 * 
 	 * @author Juan Heyns
 	 */
-	private class InternalTableCellRenderer extends DefaultTableCellRenderer {
+	private class InternalTableCellRenderer extends DefaultTableCellRenderer implements Serializable {
 
-		private static final long serialVersionUID = -2341614459632756921L;
+		private static final long serialVersionUID = 1L;
 
 		public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean isSelected, boolean hasFocus, int row, int col) {
 			JLabel label = (JLabel) super.getTableCellRendererComponent(arg0, arg1, isSelected, hasFocus, row, col);
@@ -673,7 +680,8 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 * 
 	 * @author Juan Heyns
 	 */
-	private class InternalController implements ActionListener, MouseListener {
+	private class InternalController implements ActionListener, MouseListener, Serializable {
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * Next, Previous and Month buttons clicked, causes the model to be
@@ -719,6 +727,11 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 			else if (arg0.getSource() == internalView.getDayTable()) {
 				int row = internalView.getDayTable().getSelectedRow();
 				int col = internalView.getDayTable().getSelectedColumn();
+				if (row < 0) {
+					internalView.getDayTable().removeMouseListener(internalController);
+					internalView.getDayTable().addMouseListener(internalController);
+				}
+
 				if (row >= 0 && row <= 5) {
 					Integer date = (Integer) internalModel.getValueAt(row, col);
 					internalModel.getModel().setDay(date);
@@ -765,8 +778,9 @@ public class JDatePanelImpl extends JPanel implements JDatePanel {
 	 * 
 	 * @author Juan Heyns
 	 */
-	protected class InternalCalendarModel implements TableModel, SpinnerModel, ChangeListener {
-
+	protected class InternalCalendarModel implements TableModel, SpinnerModel, ChangeListener, Serializable {
+		private static final long serialVersionUID = 1L;
+		
 		private DateModel<?> model;
 		private HashSet<ChangeListener> spinnerChangeListeners;
 		private HashSet<TableModelListener> tableModelListeners;

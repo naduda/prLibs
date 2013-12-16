@@ -27,6 +27,7 @@ or implied, of Juan Heyns.
 */
 package net.sourceforge.jdatepicker.impl;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -36,9 +37,8 @@ import javax.swing.JFormattedTextField;
 
 import net.sourceforge.jdatepicker.util.JDatePickerUtil;
 
-public class DateComponentFormatter extends JFormattedTextField.AbstractFormatter {
-	
-	private static final long serialVersionUID = 5997312768041129127L;
+public class DateComponentFormatter extends JFormattedTextField.AbstractFormatter implements Serializable {	
+	private static final long serialVersionUID = 1L;
 	
 	DateFormat format;
 	

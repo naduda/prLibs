@@ -2,10 +2,11 @@ package ua.pr.menu;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import javax.swing.JFrame;
 
-public class FrameXMLMenuLoader extends JFrame {
+public class FrameXMLMenuLoader extends JFrame implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static final String MAIN_MENU = "mainMenu";
 
@@ -23,8 +24,6 @@ public class FrameXMLMenuLoader extends JFrame {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		setSize(300, 200);
-		setVisible(true);
 	}
 
 	public XMLMenuLoader getLoader() {

@@ -27,12 +27,14 @@ or implied, of Juan Heyns.
 */
 package net.sourceforge.jdatepicker.impl;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
 import net.sourceforge.jdatepicker.AbstractDateModel;
 
-public class UtilDateModel extends AbstractDateModel<java.util.Date> {
+public class UtilDateModel extends AbstractDateModel<java.util.Date> implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	public UtilDateModel() {
 		this(null);

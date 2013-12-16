@@ -30,6 +30,7 @@ package net.sourceforge.jdatepicker.graphics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import javax.swing.Icon;
 
@@ -38,7 +39,9 @@ import javax.swing.Icon;
  * 
  * @author Juan Heyns
  */
-public class JPreviousIcon implements Icon {
+public class JPreviousIcon implements Icon, Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	protected int width;
 	protected int height;
 

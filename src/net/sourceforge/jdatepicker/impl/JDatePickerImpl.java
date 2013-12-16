@@ -29,6 +29,7 @@ package net.sourceforge.jdatepicker.impl;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,22 +37,22 @@ import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.DefaultFormatterFactory;
-
 import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.JDatePanel;
 import net.sourceforge.jdatepicker.JDatePicker;
@@ -69,9 +70,8 @@ import net.sourceforge.jdatepicker.JDatePicker;
  * @author Yue Huang
  * @param <T>
  */
-public class JDatePickerImpl extends JPanel implements JDatePicker {
-
-	private static final long serialVersionUID = 2814777654384974503L;
+public class JDatePickerImpl extends JPanel implements JDatePicker, Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private Popup popup;
 	private JFormattedTextField formattedTextField;
@@ -79,6 +79,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 	
 	private JDatePanelImpl datePanel;
 	private InternalEventHandler internalEventHandler;
+	private ArrayList<ActionListener> actionListenerList;
 
 	public JDatePickerImpl(JDatePanelImpl dateInstantPanel) {
 		this(dateInstantPanel, null);
@@ -95,6 +96,8 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 	 */
 	public JDatePickerImpl(JDatePanelImpl datePanel, JFormattedTextField.AbstractFormatter formatter) {
 		this.datePanel = datePanel;
+		
+		actionListenerList = new ArrayList<>();
 
 		//Initialise Variables
 		popup = null;
@@ -102,7 +105,8 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		internalEventHandler = new InternalEventHandler();
 
 		//Create Layout
-		SpringLayout layout = new SpringLayout();
+//		SpringLayout layout = new SpringLayout();
+		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
         setLayout(layout);
 
         //Create and Add Components
@@ -112,22 +116,22 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		setTextFieldValue(formattedTextField, model.getYear(), model.getMonth(), model.getDay(), model.isSelected());
 		formattedTextField.setEditable(false);		
 		add(formattedTextField);
-        layout.putConstraint(SpringLayout.WEST, formattedTextField, 0, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, formattedTextField);
+//        layout.putConstraint(SpringLayout.WEST, formattedTextField, 0, SpringLayout.WEST, this);
+//        layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, formattedTextField);
 
 		//Add and Configure Button
 		button = new JButton("...");
 		button.setFocusable(true);
 		add(button);
-        layout.putConstraint(SpringLayout.WEST, button, 1, SpringLayout.EAST, formattedTextField);
-        layout.putConstraint(SpringLayout.EAST, this, 0, SpringLayout.EAST, button);
-        layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, button);
+//        layout.putConstraint(SpringLayout.WEST, button, 1, SpringLayout.EAST, formattedTextField);
+//        layout.putConstraint(SpringLayout.EAST, this, 0, SpringLayout.EAST, button);
+//        layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, button);
 		
 		//Do layout formatting
 		int h = (int)button.getPreferredSize().getHeight();
 		int w = (int)datePanel.getPreferredSize().getWidth();
 		button.setPreferredSize(new Dimension(h, h));
-		formattedTextField.setPreferredSize(new Dimension(w-h-1, h));
+		formattedTextField.setPreferredSize(new Dimension(w-h, h));
 
 		//Add event listeners
 		addHierarchyBoundsListener(internalEventHandler);
@@ -149,6 +153,14 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		formattedTextField.setFormatterFactory(factory);
 	}
 	
+	public Date getDate() {
+		return ((Calendar)formattedTextField.getValue()).getTime();
+	}
+	
+	public void setDate(Calendar calendar) {
+		formattedTextField.setValue(calendar);
+	}
+	
 	protected JFormattedTextField.AbstractFormatter createFormatter() {
 		
 		return new DateComponentFormatter();
@@ -164,6 +176,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 	}
 
 	public void addActionListener(ActionListener actionListener) {
+		actionListenerList.add(actionListener);
 		datePanel.addActionListener(actionListener);
 	}
 
@@ -232,6 +245,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 		if (popup == null){
 			PopupFactory fac = new PopupFactory();
 			Point xy = getLocationOnScreen();
+
 			datePanel.setVisible(true); 
 			popup = fac.getPopup(this, datePanel, (int) xy.getX(), (int) (xy.getY()+this.getHeight()));
 			popup.show();
@@ -251,7 +265,9 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 	/**
 	 * This internal class hides the public event methods from the outside 
 	 */
-	private class InternalEventHandler implements ActionListener, HierarchyBoundsListener, ChangeListener, PropertyChangeListener {
+	private class InternalEventHandler implements ActionListener, HierarchyBoundsListener, 
+				ChangeListener, PropertyChangeListener, Serializable {
+		private static final long serialVersionUID = 1L;
 
 		public void ancestorMoved(HierarchyEvent arg0) {
 			hidePopup();
@@ -263,7 +279,7 @@ public class JDatePickerImpl extends JPanel implements JDatePicker {
 
 		public void actionPerformed(ActionEvent arg0) {
 			if (arg0.getSource() == button){
-				if (popup == null) {
+				if (popup == null) {				
 					showPopup();
 				}
 				else {
