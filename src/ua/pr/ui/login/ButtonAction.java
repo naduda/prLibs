@@ -1,13 +1,13 @@
 package ua.pr.ui.login;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import ua.pr.common.ToolsPrLib;
 import ua.pr.db.ServerSQL;
 
 public class ButtonAction extends AbstractAction {
@@ -50,12 +50,7 @@ public class ButtonAction extends AbstractAction {
 					System.out.println("error - CONNECTION");
 				}
 				
-				Container curObject = ((JButton)event.getSource()).getParent();
-				while (!curObject.getClass().equals(LoginDialog.class)) {
-					curObject = curObject.getParent();
-				}
-				
-				LoginDialog ld = (LoginDialog) curObject;
+				LoginDialog ld = (LoginDialog) ToolsPrLib.getActiveForm((JComponent) event.getSource(), LoginDialog.class);
 				if (conn != null) {					
 					ld.setStrConnect(strConn);
 					ld.setVisible(false);

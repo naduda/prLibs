@@ -1,10 +1,12 @@
 package ua.pr.common;
 
+import java.awt.Container;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.swing.JComponent;
 
 /**
  * @author pavel.naduda
@@ -83,5 +85,13 @@ public class ToolsPrLib {
 	    final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
 	    newPaths[newPaths.length-1] = pathToAdd;
 	    usrPathsField.set(null, newPaths);
+	}
+	
+	public static Container getActiveForm(JComponent b, Object class_) {
+		Container curObject = b.getParent();
+		while (!curObject.getClass().equals(class_)) {
+			curObject = curObject.getParent();
+		}
+		return curObject;
 	}
 }
