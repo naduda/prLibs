@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import javax.swing.JComponent;
 
 /**
@@ -93,5 +94,17 @@ public class ToolsPrLib {
 			curObject = curObject.getParent();
 		}
 		return curObject;
+	}
+	
+	/**
+	 * Повертає рядок заданої довжини
+	 * В кінці доставляє пробєли, або обрізає
+	 */
+	public static String fixedLenthString(String string, int length) {
+		if (length <= string.length()) {
+			return string.substring(0, length);
+		} else {
+			return String.format("%s%" + (length - string.length()) + "s", string, "");
+		}
 	}
 }
