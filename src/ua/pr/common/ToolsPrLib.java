@@ -2,6 +2,7 @@ package ua.pr.common;
 
 import java.awt.Container;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -107,4 +108,14 @@ public class ToolsPrLib {
 			return String.format("%s%" + (length - string.length()) + "s", string, "");
 		}
 	}
+	
+	/**
+	 * 
+	 * Example: customFormat("\u00a5###,###.###", 12345.67);
+	 */
+	public static String customFormat(String pattern, double value ) {
+	    DecimalFormat myFormatter = new DecimalFormat(pattern);
+	    return myFormatter.format(value);
+	}
+
 }
