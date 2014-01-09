@@ -1,6 +1,10 @@
 package ua.pr.common;
 
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,6 +13,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 /**
  * @author pavel.naduda
@@ -116,6 +123,35 @@ public class ToolsPrLib {
 	public static String customFormat(String pattern, double value ) {
 	    DecimalFormat myFormatter = new DecimalFormat(pattern);
 	    return myFormatter.format(value);
+	}
+	
+	public static void HideOnEsc(final Object comp, final boolean exit) {
+		
+		ActionListener escListener = new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	if (exit) {
+	        		if (comp instanceof JFrame) {
+	        			((JFrame)comp).dispose();
+	        		} else {
+	        			System.exit(0);
+	        		}
+				} else {
+					((Component) comp).setVisible(false);
+				}
+	        }
+	    };
+
+	    if (comp instanceof JDialog) {
+	    	((JDialog) comp).getRootPane().registerKeyboardAction(escListener,
+		            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+		            JComponent.WHEN_IN_FOCUSED_WINDOW);
+		} else if (comp instanceof JFrame) {
+	    	((JFrame) comp).getRootPane().registerKeyboardAction(escListener,
+		            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+		            JComponent.WHEN_IN_FOCUSED_WINDOW);
+		}
+	    
 	}
 
 }

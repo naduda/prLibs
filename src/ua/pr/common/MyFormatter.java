@@ -15,11 +15,17 @@ public class MyFormatter extends Formatter {
         builder.append(df.format(new Date(record.getMillis()))).append(" ");
         builder.append(ToolsPrLib.fixedLenthString(record.getLevel().getName(), 10));
         if (record.getLevel().equals(Level.INFO)) {
-        	builder.append(ToolsPrLib.fixedLenthString(formatMessage(record), 40));
+        	String info = formatMessage(record);
+        	while (info.length() > 71) {
+        		builder.append(ToolsPrLib.fixedLenthString(info, 71)).append("\n");
+        		builder.append(ToolsPrLib.fixedLenthString("", 35));
+        		info = info.substring(71);
+			}
+        	builder.append(ToolsPrLib.fixedLenthString(info, 71));
 		} else {
 			builder.append(formatMessage(record));
-		}
-        builder.append("     [").append(record.getSourceClassName()).append("] ");
+			builder.append("     [").append(record.getSourceClassName()).append("] ");
+		}        
         builder.append("\n");
         return builder.toString();
     }
