@@ -1,7 +1,7 @@
 package ua.pr.common;
 
 import java.io.IOException;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64; //commons-codec-1.8.jar
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
